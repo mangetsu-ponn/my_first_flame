@@ -15,11 +15,14 @@ class SpaceShooterGame extends FlameGame with PanDetector {
   late Player player;
 
   @override
-  Future<void> onLoad() async {
+  Future<void>? onLoad() async {
     await super.onLoad();
 
+    final playerSprite = await loadSprite('player-sprite.png');
     player = Player()
-      ..position = size / 2
+      ..sprite = playerSprite
+      ..x = size.x / 2
+      ..y = size.y / 2
       ..width = 50
       ..height = 100
       ..anchor = Anchor.center;
@@ -33,15 +36,7 @@ class SpaceShooterGame extends FlameGame with PanDetector {
   }
 }
 
-class Player extends PositionComponent {
-  static final _paint = Paint()..color = Colors.white;
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    canvas.drawRect(size.toRect(), _paint);
-  }
-
+class Player extends SpriteComponent {
   void move(Vector2 delta) {
     position.add(delta);
   }
