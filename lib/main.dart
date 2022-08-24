@@ -15,17 +15,10 @@ class SpaceShooterGame extends FlameGame with PanDetector {
   late Player player;
 
   @override
-  Future<void>? onLoad() async {
+  Future<void> onLoad() async {
     await super.onLoad();
 
-    final playerSprite = await loadSprite('player-sprite.png');
-    player = Player()
-      ..sprite = playerSprite
-      ..x = size.x / 2
-      ..y = size.y / 2
-      ..width = 50
-      ..height = 100
-      ..anchor = Anchor.center;
+    player = Player();
 
     add(player);
   }
@@ -36,7 +29,19 @@ class SpaceShooterGame extends FlameGame with PanDetector {
   }
 }
 
-class Player extends SpriteComponent {
+class Player extends SpriteComponent with HasGameRef<SpaceShooterGame> {
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    sprite = await gameRef.loadSprite('player-sprite.png');
+
+    position = gameRef.size / 2;
+    width = 100;
+    height = 150;
+    anchor = Anchor.center;
+  }
+
   void move(Vector2 delta) {
     position.add(delta);
   }
